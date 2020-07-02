@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.movierecommmendation.movie.dao.RatingDao">
+    <resultMap id="BaseResultMap" type="com.movierecommmendation.movie.entity.Rating">
+        <result column="UserID" property="UserId" />
+        <result column="MovieID" property="MovieId" />
+        <result column="Rating" property="Rating" />
+        <result column="Timestamp" property="Timestamp" />
+    </resultMap>
+
+    <parameterMap id="Rating" type="com.movierecommmendation.movie.entity.Rating"/>
+
+    <sql id="Base_Column_List">
+		UserID, MovieID, Rating, Timestamp
+	</sql>
+
+    <insert id="insert" parameterMap="Rating">
+		insert into rating (UserID, MovieID, Rating, Timestamp)
+		values (#{UserId}, #{MovieId}, #{Rating}, #{Timestamp})
+	</insert>
+
+    <update id="update" parameterMap="Rating">
+        update
+        rating
+        set
+        <if test="Rating!=null and Rating!=''">
+            , Rating = #{Rating}
+        </if>
+
+        <if test="Timestamp!=null and Timestamp!=''">
+            , Timestamp = #{Timestamp}
+        </if>
+        where UserID= #{UserId} and MovieID= #{MovieId}
+    </update>
+
+    <delete id="delete" parameterType="Rating">
+		delete from  rating where UserID= #{UserId} and MovieID= #{MovieId}
+	</delete>
+
+    <select id="findAll" resultMap="BaseResultMap" >
+		select
+		*
+		from rating
+	</select>
+
+    <select id="findByPrimary" parameterType="Rating" resultMap="BaseResultMap">
+        select
+        *
+        from rating
+        where UserID= #{UserId} and MovieID= #{MovieId}
+    </select>
+</mapper>

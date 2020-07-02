@@ -1,6 +1,8 @@
 package com.movierecommmendation.movie.web;
 
+import com.movierecommmendation.movie.entity.Rating;
 import com.movierecommmendation.movie.entity.User;
+import com.movierecommmendation.movie.service.RatingService;
 import com.movierecommmendation.movie.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ import org.slf4j.LoggerFactory;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private RatingService ratingService;
     User user = new User();
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -78,6 +82,21 @@ public class UserController {
             e.printStackTrace();
             map.put("state",false);
             map.put("msg","提示："+e.getMessage());
+        }
+        return map;
+    }
+
+    @RequestMapping("/ratingtest")
+    public Map<String, Object> ratingtest(){
+        Map<String, Object> map = new HashMap<>();
+        try {
+//            System.out.println(ratingService.findAll());
+            Rating rating = new Rating();
+            rating.setUserId(1);
+            rating.setMovieId(661);
+            System.out.println(ratingService.findByPrimary(rating));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return map;
     }
