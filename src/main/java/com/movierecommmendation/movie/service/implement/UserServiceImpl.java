@@ -4,6 +4,7 @@ import com.movierecommmendation.movie.dao.BaseDao;
 import com.movierecommmendation.movie.dao.UserDao;
 import com.movierecommmendation.movie.entity.User;
 import com.movierecommmendation.movie.service.UserService;
+import com.movierecommmendation.movie.util.MovieParse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         User userDB = getMapper().findByUsername(user.getUsername());
         if(userDB == null)
         {
-            insert(user);
+            if ((userDB.getAge()<150) && ( userDB.getAge()>0)) {
+                insert(user);
+            } else {
+                throw new RuntimeException("请填写正确的年龄");
+            }
         }else{
             throw new RuntimeException("用户名已存在");
         }
@@ -56,12 +61,23 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         if(!ObjectUtils.isEmpty(userDB))
         {
             if(userDB.getPassword().equals(user.getPassword())){
+                userDB.setOccupation(new MovieParse().UserPrase(userDB.getOccupation()));
                 return userDB;
             }else{
                 throw new RuntimeException("密码错误");
             }
         }else{
             throw new RuntimeException("用户不存在");
+        }
+    }
+
+    @Override
+    public void modify(User user){
+        try {
+            getMapper().update(user);
+            user.setOccupation(new MovieParse().UserPrase(user.getOccupation()));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

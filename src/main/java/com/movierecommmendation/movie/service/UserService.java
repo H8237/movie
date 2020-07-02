@@ -23,4 +23,11 @@ public interface UserService extends BaseService<User> {
      * @return User
      */
     User login(User user);
+    /**
+     * 修改资料
+     * @param user
+     * @throws Exception
+     * @return User
+     */
+    void modify(User user);
 }

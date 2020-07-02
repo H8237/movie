@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="wrap">
+    <p>hi <span v-if="isLog" v-text="user.username"></span>！</p>
+    <a href="javascript:; "  v-if="isLog"@click="logout">注销</a>
+    <a href="/Profile.html" v-if="isLog">查看资料</a>
+    <div>
+        <a href="/login.html">登录</a>
+        <a href="/register.html">注册</a>
+    </div>
+</div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.min.js"></script>
+<script>
+    var app = new Vue({
+        el:"#wrap",
+        data:{
+            user:{
+                username:"",
+            },
+            isLog:"false"
+        },
+        methods:{
+            logout(){
+                var _this = this.user;
+                if(_this!=null) {
+                    localStorage.removeItem("user");
+                    location.reload(true);
+                }
+            }
+        },
+        created(){
+            var userString = localStorage.getItem("user");
+            if(userString!=null){
+            this.user = JSON.parse(userString);
+            this.isLog = true;
+            }else{
+                this.isLog = false;
+            }
+        }
+    })
+</script>
+</html>

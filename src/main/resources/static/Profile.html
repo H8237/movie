@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="wrap">
+    <a href="javascript:; "  v-if="isLog" @click="logout">注销</a>
+    <a href="javascript:; "  v-if="isLog" @click="showModify">修改资料</a>
+    <div id="info">
+        <p><label>用户id:</label><span v-text="user.id"></span></p>
+        <p><label>用户名:</label><span v-text="user.username"></span></p>
+        <p><label>性别:</label><span v-text="user.gender"></span></p>
+        <p><label>职业:</label><span v-text="user.occupation"></span></p>
+        <p><label>年龄:</label><span v-text="user.age"></span></p>
+        <p><label>邮编:</label><span v-text="user.zipcode"></span></p>
+    </div>
+    <div id="modify" v-if="isModify">
+        <form>
+            <table>
+                <tr>
+                    <td>用户名</td>
+                    <td><input type="text" v-model="user.username"></td>
+                </tr>
+                <tr>
+                    <td>密 码</td>
+                    <td><input type="password" v-model="user.password"></td>
+                </tr>
+                <tr>
+                    <td>性 别</td>
+                    <td><input type="radio" name="sex" value="1" v-model="user.sex">男
+                        <input type="radio" name="sex" value="2" v-model="user.sex">女</td>
+                </tr>
+                <tr>
+                    <td>职 业</td>
+                    <td>
+                        <select v-model="user.occupation">
+                            <option value="0">其它</option>
+                            <option value="1">学术/教育工作者</option>
+                            <option value="2" selected>艺术家</option>
+                            <option value="3">文书/管理员</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>年 龄</td>
+                    <td><input type="number" min="0" max="150" v-model="user.age"></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="button" @click="modify" value="提交修改">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.min.js"></script>
+<script>
+    var app = new Vue({
+        el:"#wrap",
+        data:{
+            user:{
+                username:"",
+            },
+            isLog:"false",
+            isModify:"false"
+        },
+        methods:{
+            logout(){
+                var _this = this.user;
+                if(_this!=null) {
+                    localStorage.removeItem("user");
+                    location.reload(true);
+                }
+            },
+            showModify(){
+                this.isModify="true";
+            },
+            modify(){
+                axios.post("http://127.0.0.1:8080/modify",this.user).then(res=>{
+                    console.log(res.data);
+                    if(res.data.state){
+                        alert(res.data.msg);
+                        localStorage.setItem("user",JSON.stringify(res.data.user));
+                        this.isModify="false";
+                    }else{
+                        alert(res.data.msg);
+                    }
+                });
+            }
+        },
+        created(){
+            var userString = localStorage.getItem("user");
+            if(userString!=null){
+                this.user = JSON.parse(userString);
+                this.isLog = true;
+            }else{
+                this.isLog = false;
+                alert("尚未登录！");
+                location.href = "/index.html";
+            }
+        }
+    })
+</script>
+</html>

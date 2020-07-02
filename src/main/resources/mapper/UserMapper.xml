@@ -2,23 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.movierecommmendation.movie.dao.UserDao">
     <resultMap id="BaseResultMap" type="com.movierecommmendation.movie.entity.User">
-        <result column="id" property="id" />
+        <result column="userid" property="id" />
         <result column="username" property="username" />
         <result column="password" property="password" />
-        <result column="sex" property="sex" />
+        <result column="gender" property="gender" />
         <result column="occupation" property="occupation" />
         <result column="age" property="age" />
+        <result column="zipcode" property="zipcode" />
     </resultMap>
 
     <parameterMap id="User" type="com.movierecommmendation.movie.entity.User"/>
 
     <sql id="Base_Column_List">
-		id, username, password, sex, occupation, age
+		userid, username, password, gender, occupation, age, zip-code
 	</sql>
 
     <insert id="insert" parameterMap="User">
-		insert into m_user (username, password, sex, occupation, age)
-		values (#{username}, #{password}, #{sex}, #{occupation}, #{age})
+		insert into m_user (username, password, gender, occupation, age, zipcode)
+		values (#{username}, #{password}, #{gender}, #{occupation}, #{age}, #{zipcode})
 	</insert>
 
     <update id="update" parameterMap="User">
@@ -33,18 +34,22 @@
             , password = #{password}
         </if>
 
-        <if test="sex!=null and sex!=''">
-            , sex = #{sex}
+        <if test="gender!=null and gender!=''">
+            , gender = #{gender}
         </if>
 
         <if test="occupation!=null and occupation!=''">
-            , age = #{age}
+            , occupation = #{occupation}
         </if>
 
         <if test="age!=null and age!=''">
             , age = #{age}
         </if>
-        where id= #{id}
+
+        <if test="zipcode!=null and zipcode!=''">
+            , zipcode = #{zipcode}
+        </if>
+        where userid= #{id}
     </update>
 
     <delete id="delete" parameterType="User">
@@ -61,10 +66,10 @@
         select
         *
         from m_user
-        where id = #{id}
+        where userid = #{userid}
     </select>
 
-    <select id="findByUsername" parameterType="String" resultType="User">
+    <select id="findByUsername" parameterType="String" resultType="User" resultMap="BaseResultMap">
         select * from m_user where username = #{username}
     </select>
 

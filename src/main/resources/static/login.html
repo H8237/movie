@@ -42,6 +42,8 @@
                     console.log(res.data);
                     if(res.data.state){
                         alert(res.data.msg);
+                        localStorage.setItem("user",JSON.stringify(res.data.user));
+                        location.href = "/index.html";
                     }else{
                         alert(res.data.msg);
                     }
