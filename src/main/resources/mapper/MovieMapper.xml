@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.movierecommmendation.movie.dao.MovieMapper">
+  <resultMap id="BaseResultMap" type="com.movierecommmendation.movie.entity.Movie">
+    <id column="movieID" jdbcType="INTEGER" property="movieid" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="director" jdbcType="VARCHAR" property="director" />
+    <result column="scriptwriter" jdbcType="VARCHAR" property="scriptwriter" />
+    <result column="starring" jdbcType="VARCHAR" property="starring" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="relase_date" jdbcType="VARCHAR" property="relaseDate" />
+    <result column="running_time" jdbcType="INTEGER" property="runningTime" />
+    <result column="rating" jdbcType="INTEGER" property="rating" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.movierecommmendation.movie.entity.Movie">
+    <result column="introduction" jdbcType="LONGVARCHAR" property="introduction" />
+  </resultMap>
+  <parameterMap id="User" type="com.movierecommmendation.movie.entity.User"/>
+
+  <sql id="Base_Column_List">
+		movieID, title, director, introduction, scriptwriter, starring, type, relase_date, running_time, rating
+	</sql>
+
+  <insert id="insert" parameterMap="Movie">
+		insert into movie (movieID, title, director, introduction, scriptwriter, starring, type, relase_date, running_time, rating)
+		values (#{movieid}, #{title}, #{director}, #{introduction}, #{scriptwriter}, #{starring}, #{type}, #{relaseDate}, #{runningTime}, #{rating})
+	</insert>
+
+  <update id="update" parameterMap="Movie">
+    update
+    movie
+    set
+    <if test="movieid!=null and movieid!=''">
+      movieID = #{movieid}
+    </if>
+
+    <if test="title!=null and title!=''">
+      , title = #{tile}
+    </if>
+
+    <if test="director!=null and director!=''">
+      , director = #{director}
+    </if>
+
+    <if test="introduction!=null and introduction!=''">
+      , introduction = #{introduction}
+    </if>
+
+    <if test="scriptwriter!=null and scriptwriter!=''">
+      , age = #{age}
+    </if>
+
+    <if test="starring!=null and starring!=''">
+      , starring = #{starring}
+    </if>
+
+    <if test="type!=null and type!=''">
+      , type = #{type}
+    </if>
+
+    <if test="relaseDate!=null and relaseDate!=''">
+      , relase_date = #{relaseDate}
+    </if>
+
+    <if test="runningTime!=null and runningTime!=''">
+      , runingtime = #{runningTime}
+    </if>
+
+    <if test="rating!=null and rating!=''">
+      , rating = #{rating}
+    </if>
+    where movieID= #{movieid}
+  </update>
+
+  <delete id="delete" parameterType="User">
+		delete from  movie where movieID=#{movieid}
+	</delete>
+
+  <select id="findAll" resultMap="BaseResultMap" >
+		select
+		*
+		from movie
+	</select>
+
+  <select id="findByPrimaryKey" resultMap="BaseResultMap">
+        select
+        *
+        from movie
+        where movieID = #{movieid}
+    </select>
+
+</mapper>
