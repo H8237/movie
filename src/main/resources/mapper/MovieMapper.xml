@@ -18,7 +18,8 @@
   <parameterMap id="Movie" type="com.movierecommmendation.movie.entity.Movie"/>
 
   <sql id="Base_Column_List">
-		movieID, title, director, introduction, scriptwriter, starring, type, relase_date, running_time, rating
+		movieID, title, director, introduction, scriptwriter,
+		 starring, type, relase_date, running_time, rating
 	</sql>
 
   <insert id="insert" parameterMap="Movie">
@@ -78,7 +79,7 @@
 
   <select id="findAll" resultMap="BaseResultMap" >
 		select
-		*
+    <include refid="Base_Column_List" />
 		from movie
 	</select>
 
@@ -88,5 +89,19 @@
         from movie
         where movieID = #{movieid}
     </select>
+
+  <select id="findByTitle" parameterType="String" resultMap="BaseResultMap">
+    select
+    *
+    from movie
+    where title like CONCAT('%', #{title}, '%')
+  </select>
+
+  <select id="findByAvgRating" resultMap="BaseResultMap">
+    select *
+    from moviebyrating
+    order by 'avg' desc
+    limit 10
+  </select>
 
 </mapper>
