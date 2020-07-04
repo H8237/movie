@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
  */
 @RestController("/user")
 @CrossOrigin //允许跨域
-
 public class UserController {
     @Autowired
     private UserService userService;
@@ -94,7 +93,8 @@ public class UserController {
             Rating rating = new Rating();
             rating.setUserId(1);
             rating.setMovieId(661);
-            System.out.println(ratingService.findByPrimary(rating));
+//            System.out.println(ratingService.findByPrimary(rating));
+            ratingService.execPythonTest();
         } catch (Exception e) {
             e.printStackTrace();
         }
