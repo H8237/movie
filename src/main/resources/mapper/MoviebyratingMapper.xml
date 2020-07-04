@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.movierecommmendation.movie.dao.MoviebyratingDao">
+  <resultMap id="BaseResultMap" type="com.movierecommmendation.movie.entity.Moviebyrating">
+    <result column="avg" jdbcType="REAL" property="avg" />
+    <result column="movieID" jdbcType="INTEGER" property="movieid" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="director" jdbcType="VARCHAR" property="director" />
+    <result column="scriptwriter" jdbcType="VARCHAR" property="scriptwriter" />
+    <result column="starring" jdbcType="VARCHAR" property="starring" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="relase_date" jdbcType="VARCHAR" property="relaseDate" />
+    <result column="running_time" jdbcType="INTEGER" property="runningTime" />
+    <result column="rating" jdbcType="INTEGER" property="rating" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.movierecommmendation.movie.dao.MoviebyratingDao">
+    <result column="introduction" jdbcType="LONGVARCHAR" property="introduction" />
+  </resultMap>
+  <select id="findByAvgRating" resultMap="BaseResultMap">
+    select *
+    from moviebyrating
+    order by 'avg' desc
+    limit 10
+  </select>
+</mapper>

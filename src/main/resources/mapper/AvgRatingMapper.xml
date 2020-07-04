@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.movierecommmendation.movie.dao.AvgRatingDao">
+  <resultMap id="BaseResultMap" type="com.movierecommmendation.movie.entity.AvgRating">
+    <result column="movieID" jdbcType="INTEGER" property="movieid" />
+    <result column="avg" jdbcType="REAL" property="avg" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+		movieID, avg
+	</sql>
+
+  <select id="findAll" resultMap="BaseResultMap" >
+		select
+		*
+		from movie
+		order by avg desc
+	</select>
+
+	<select id="findByAvgRating" resultMap="BaseResultMap">
+    select *
+    from moviebyrating
+    order by 'avg' desc
+    limit 10
+  </select>
+
+</mapper>
