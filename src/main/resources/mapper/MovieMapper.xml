@@ -15,7 +15,7 @@
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.movierecommmendation.movie.entity.Movie">
     <result column="introduction" jdbcType="LONGVARCHAR" property="introduction" />
   </resultMap>
-  <parameterMap id="User" type="com.movierecommmendation.movie.entity.User"/>
+  <parameterMap id="Movie" type="com.movierecommmendation.movie.entity.Movie"/>
 
   <sql id="Base_Column_List">
 		movieID, title, director, introduction, scriptwriter, starring, type, relase_date, running_time, rating

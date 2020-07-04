@@ -7,7 +7,7 @@
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.movierecommmendation.movie.entity.Poster">
     <result column="poster" jdbcType="LONGVARBINARY" property="poster" />
   </resultMap>
-  <parameterMap id="Poster" type="com.movierecommmendation.movie.entity.Poster"/>
+  <parameterMap id="Post s5er" type="com.movierecommmendation.movie.entity.Poster"/>
 
   <sql id="Base_Column_List">
 		movieID, poster

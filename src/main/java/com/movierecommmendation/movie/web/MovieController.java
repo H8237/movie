@@ -22,6 +22,7 @@ public class MovieController {
     @RequestMapping("/search")
     public Map<String, Object> search() {
         Map<String, Object> map = new HashMap<>();
+
         return map;
     }
 }
