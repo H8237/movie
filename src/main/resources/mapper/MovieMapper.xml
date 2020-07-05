@@ -100,7 +100,7 @@
   <select id="findByAvgRating" resultMap="BaseResultMap">
     select *
     from moviebyrating
-    order by 'avg' desc
+    order by avg desc
     limit 10
   </select>
 

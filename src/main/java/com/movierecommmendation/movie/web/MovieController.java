@@ -31,7 +31,7 @@ public class MovieController {
     public Map<String, Object> search(String movieName, Integer curPage) {
         Map<String, Object> map = new HashMap<>();
         try {
-            Page<?> page = PageHelper.startPage(curPage, 2);
+            Page<?> page = PageHelper.startPage(curPage, 10);
             List<Movie> movies = movieService.findByTitle(movieName, curPage);
             Long total = page.getTotal();
             map.put("state",true);
