@@ -29,7 +29,7 @@ public class RatingController {
         try {
             ratingService.insert(rating);
             map.put("state",true);
-            map.put("msg","搜索成功");
+            map.put("msg","评分成功");
         } catch (Exception e) {
             e.printStackTrace();
             map.put("state",false);
