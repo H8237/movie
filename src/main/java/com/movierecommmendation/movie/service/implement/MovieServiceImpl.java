@@ -53,4 +53,38 @@ public class MovieServiceImpl extends BaseServiceImpl<Movie> implements MovieSer
         }
         return list;
     }
+
+    @Override
+    public boolean insertUserLike(Integer MovieID, Integer UserID){
+        boolean falg=false;
+        try {
+            getMapper().insertUserLike(MovieID,UserID);
+            falg=true;
+        } catch (Exception e) {
+            throw new RuntimeException("已经喜欢过");
+        }
+        return falg;
+    }
+
+    @Override
+    public List<Movie> findUserLikeByUser(Integer UserID){
+        List<Movie> list = null;
+        try{
+            list = getMapper().findUserLikeByUser(UserID);
+        } catch (Exception e){
+            logger.error("查询用户喜欢失败!原因是:", e);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Movie> findTopMoviesByType(String type, Integer curPage){
+        List<Movie> list = null;
+        try{
+            list = getMapper().findTopMoviesByType(type);
+        } catch (Exception e){
+            logger.error("查询用户喜欢失败!原因是:", e);
+        }
+        return list;
+    }
 }

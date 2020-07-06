@@ -21,6 +21,8 @@ public class Movie {
 
     private String introduction;
 
+    private Integer RatingPeople;
+
     public Integer getMovieid() {
         return movieid;
     }
@@ -99,5 +101,13 @@ public class Movie {
 
     public void setIntroduction(String introduction) {
         this.introduction = introduction == null ? null : introduction.trim();
+    }
+
+    public Integer getRatingPeople() {
+        return RatingPeople;
+    }
+
+    public void setRatingPeople(Integer ratingPeople) {
+        this.RatingPeople = ratingPeople;
     }
 }

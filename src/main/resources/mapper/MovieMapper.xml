@@ -11,6 +11,7 @@
     <result column="relase_date" jdbcType="VARCHAR" property="relaseDate" />
     <result column="running_time" jdbcType="INTEGER" property="runningTime" />
     <result column="rating" jdbcType="INTEGER" property="rating" />
+    <result column="rating_people" jdbcType="INTEGER" property="RatingPeople" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.movierecommmendation.movie.entity.Movie">
     <result column="introduction" jdbcType="LONGVARCHAR" property="introduction" />
@@ -19,7 +20,7 @@
 
   <sql id="Base_Column_List">
 		movieID, title, director, introduction, scriptwriter,
-		 starring, type, relase_date, running_time, rating
+		 starring, type, relase_date, running_time, rating, rating_people
 	</sql>
 
   <insert id="insert" parameterMap="Movie">
@@ -101,12 +102,30 @@
     select *
     from moviebyrating
     order by avg desc
-    limit 10
+    limit 12
   </select>
 
   <select id="findByRatingMore" resultMap="BaseResultMap">
     select *
     from moviebyratemore
+  </select>
+
+  <insert id="insertUserLike" parameterType="Integer">
+		insert into user_like (MovieID, UserID)
+		values (#{MovieID}, #{UserID})
+	</insert>
+
+  <select id="findUserLikeByUser" parameterType="Integer" resultMap="BaseResultMap">
+        select
+        *
+        from user_like_movie_view
+        WHERE UserID = #{UserID}
+    </select>
+
+  <select id="findTopMoviesByType" parameterType="String" resultMap="BaseResultMap">
+    select
+    *
+    from ${type}_topmovies_view
   </select>
 
 </mapper>

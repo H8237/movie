@@ -2,7 +2,6 @@ package com.movierecommmendation.movie.web;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.movierecommmendation.movie.entity.AvgRating;
 import com.movierecommmendation.movie.entity.Movie;
 import com.movierecommmendation.movie.service.AvgRatingService;
 import com.movierecommmendation.movie.service.MovieService;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.xml.ws.Service;
+import javax.print.attribute.HashPrintJobAttributeSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,13 +82,63 @@ public class MovieController {
     public Map<String, Object> popularMovie(Integer curPage){
         Map<String, Object> map = new HashMap<>();
         try {
-            Page<?> page = PageHelper.startPage(curPage, 10);
+            Page<?> page = PageHelper.startPage(curPage, 12);
             List<Movie> movies = movieService.findByRatingMore(curPage);
             Long total = page.getTotal();
             map.put("state",true);
             map.put("msg","获取热门电影榜成功");
             map.put("total",total);
             map.put("movies",movies);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("state",false);
+            map.put("msg","提示："+e.getMessage());
+        }
+        return map;
+    }
+
+    @GetMapping("/addUserLike")
+    public Map<String,Object> addUserLike(Integer movieId, Integer userId){
+        Map<String, Object> map = new HashMap<>();
+        try {
+            movieService.insertUserLike(movieId, userId);
+            map.put("state",true);
+            map.put("msg","标记喜欢成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("state",false);
+            map.put("msg","提示："+e.getMessage());
+        }
+        return map;
+    }
+
+    @GetMapping("/moviesUserLike")
+    public Map<String, Object> moviesUserLike(Integer UserId){
+        Map<String, Object> map = new HashMap<>();
+        try {
+            List<Movie> movies = movieService.findUserLikeByUser(UserId);
+            map.put("state",true);
+            map.put("msg","查询喜欢成功");
+            map.put("movies",movies);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("state",false);
+            map.put("msg","提示："+e.getMessage());
+        }
+        return map;
+    }
+
+    @GetMapping("/topMoviesByType")
+    public Map<String, Object> topMoviesByType(String type, Integer curPage){
+        Map<String, Object> map = new HashMap<>();
+        try {
+            Page<?> page = PageHelper.startPage(curPage, 6);
+            List<Movie> movies = movieService.findTopMoviesByType(type,curPage);
+            Long total = page.getTotal();
+            map.put("state",true);
+            map.put("msg","分标签查询热门电影成功");
+            map.put("movies",movies);
+            map.put("total",total);
         } catch (Exception e) {
             e.printStackTrace();
             map.put("state",false);

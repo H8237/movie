@@ -89,7 +89,7 @@
                     <button class="want" type="button">想看</button>
                 </li>
                 <li>
-                    <button class="like" type="button">喜欢</button>
+                    <button class="like" type="button" v-if="isLog" @click="like">喜欢</button>
                 </li>
             </ul>
             <p class='evaluation'><b>评分</b><span class='org_star'>R</span><span class='org_star'>R</span><span
@@ -99,7 +99,7 @@
 
     <div class="article">
         <p class="synopsis">{{movie.title}}剧情简介</p>
-        <p>{{movie.introduction}}</p>
+        <p style="white-space: pre-line;" v-html="movie.introduction"></p>
         <div class="like"><i></i>喜欢</div>
     </div>
 
@@ -135,6 +135,7 @@
             isLog:"false",
             movie:{},
             date:new Date(),
+            isLike:"false",
         },
         methods:{
             logout(){//注销
@@ -144,6 +145,17 @@
                     location.reload(true);
                 }
             },
+            like(){
+                axios.get("http://127.0.0.1:8080/addUserLike?movieId="+this.movie.movieid+
+                    "&userId="+this.user.id).then(res=>{
+                    console.log(res.data);
+                    if(res.data.state){
+                        this.isLike = true;
+                    }else{
+                        alert(res.data.msg);
+                    }
+                });
+            }
         },
         created(){
             //判断用户是否登录并获得用户信息
