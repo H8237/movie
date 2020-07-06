@@ -9,4 +9,5 @@ import java.util.List;
 public interface MovieDao extends BaseDao<Movie> {
     List<Movie> findByTitle(String title);
     List<Movie> findByAvgRating();
+    List<Movie> findByRatingMore();
 }

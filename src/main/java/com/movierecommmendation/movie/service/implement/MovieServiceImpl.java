@@ -42,4 +42,15 @@ public class MovieServiceImpl extends BaseServiceImpl<Movie> implements MovieSer
         }
         return list;
     }
+
+    @Override
+    public List<Movie> findByRatingMore(Integer curPage){
+        List<Movie> list = null;
+        try {
+            list = getMapper().findByRatingMore();
+        } catch (Exception e) {
+            logger.error("查询热门电影失败!原因是:", e);
+        }
+        return list;
+    }
 }

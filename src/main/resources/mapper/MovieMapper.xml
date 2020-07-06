@@ -104,4 +104,9 @@
     limit 10
   </select>
 
+  <select id="findByRatingMore" resultMap="BaseResultMap">
+    select *
+    from moviebyratemore
+  </select>
+
 </mapper>

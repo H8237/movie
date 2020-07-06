@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -69,6 +70,25 @@ public class MovieController {
             List<Movie> movies = movieService.findByAvgRating();
             map.put("state",true);
             map.put("msg","获取电影口碑前十榜成功");
+            map.put("movies",movies);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("state",false);
+            map.put("msg","提示："+e.getMessage());
+        }
+        return map;
+    }
+
+    @GetMapping("/popularMovie")
+    public Map<String, Object> popularMovie(Integer curPage){
+        Map<String, Object> map = new HashMap<>();
+        try {
+            Page<?> page = PageHelper.startPage(curPage, 10);
+            List<Movie> movies = movieService.findByRatingMore(curPage);
+            Long total = page.getTotal();
+            map.put("state",true);
+            map.put("msg","获取热门电影榜成功");
+            map.put("total",total);
             map.put("movies",movies);
         } catch (Exception e) {
             e.printStackTrace();

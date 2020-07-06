@@ -2,50 +2,162 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>主界面</title>
+    <link rel="stylesheet" href="mainui.css">
 </head>
 <body>
 <div id="wrap">
-    <p>hi <span v-if="isLog" v-text="user.username"></span>！</p>
-    <a href="javascript:; "  v-if="isLog"@click="logout">注销</a>
-    <a href="/Profile.html" v-if="isLog">查看资料</a>
-    <div>
-        <a href="/login.html">登录</a>
-        <a href="/register.html">注册</a>
+<!--顶部导航栏-->
+    <header>
+        <!--顶部左侧导航-->
+        <ul class="left-ul">
+            <li>2020/7/4</li>
+            <li>星期二</li>
+            <li>17：15</li>
+            <li>{{ user.username }}欢迎来到电影之友</li>
+        </ul>
+        <!--右侧导航-->
+        <ul class="right-ul">
+            <li><a href="/login.html" v-if="!isLog">登录</a></li>
+            <li><a href="/register.html" v-if="!isLog">注册</a></li>
+        </ul>
+    </header>
+    <!--第一部分-->
+    <div class="banner">
+        <div class="huamg">
+            <img src="../img/banner.png" alt="豆瓣网"/>
+            <form action="">
+                <input type="text" placeholder="搜索电视剧"/>
+                <button>
+                    <img src="../img/mirror.png" alt=""/>
+                </button>
+            </form>
+        </div>
     </div>
+    <!--第二部分-->
+    <div class="popular">
+        <ul class="leftsecond">
+            <li><b></b>热门电影推荐
+</a></li>
+<li><input type="button" value="最新"/></li>
+<li><input type="button" value="经典电影"/></li>
+<li><input type="button" value="冷门佳片"/></li>
+<li><input type="button" value="欧美"/></li>
+<li><input type="button" value="韩国"/></li>
+<li><input type="button" value="日本"/></li>
+</ul>
+<ul class="rightsecond">
+    <li><input type="button" value="换一批" @click="changePopular" /></li>
+</ul>
+<ul class="second" v-for="moviesByPopular in moviesByPopulars">
+    <li>
+        <a :href="'/movie.html?movieId='+moviesByPopular.movieid"><img :src="'/images/M/'+moviesByPopular.movieid+'.webp'" alt="图片1"></a><br/>
+        <span>{{ moviesByPopular.title }}</span>
+    </li>
+</ul>
+</div>
+    <p>{{moviesByPopular}}</p>
+
+
+<!--第三部分-->
+
+<div class="rating">
+    <ul class="ratingtitle">
+        <li><b></b>一周口碑榜</a></li>
+    </ul>
+    <ul class="third" v-for="moviesByRating in moviesByRatings">
+        <li>
+            <a :href="'/movie.html?movieId='+moviesByRating.movieid"><img :src="'/images/M/'+moviesByRating.movieid+'.webp'" alt="图片1"></a><br/>
+            <span>{{ moviesByRating.title }}</span>
+        </li>
+    </ul>
+</div>
+
+<!--第四部分（轮播图）-->
+<div class="classicsuggestion">
+    <ul class="suggestiontitle">
+        <li><b></b>经典推荐</a></li>
+    </ul>
+</div>
+
+
+<div id="sliderBox">
+    <div class="pic">
+        <ul>
+            <li><img src="img/1.jpg"></li>
+            <li><img src="img/2.jpg"></li>
+            <li><img src="img/3.jpg"></li>
+            <li><img src="img/4.jpg"></li>
+            <li><img src="img/5.jpg"></li>
+            <li><img src="img/1.jpg"></li>
+        </ul>
+    </div>
+</div>
+<div class="btn">
+    <span>1</span>
+    <span>2</span>
+    <span>3</span>
+    <span>4</span>
+    <span>5</span>
+</div>
+<div class="bigBtn">
+    <div class="previous"><</div>
+    <div class="next">></div>
+</div>
 </div>
 
 </body>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</html>
 <script src="/js/vue.js"></script>
 <script src="/js/axios.min.js"></script>
 <script>
     var app = new Vue({
         el:"#wrap",
-        data:{
-            user:{
-                username:"",
-            },
-            isLog:"false"
+        data: {
+            user: {},
+            moviesByRatings: {},
+            moviesByPopulars:{},
+            curPage:1,
         },
         methods:{
-            logout(){
-                var _this = this.user;
-                if(_this!=null) {
-                    localStorage.removeItem("user");
-                    location.reload(true);
+            getPopular(){
+                axios.get("http://127.0.0.1:8080/popularMovie?curPage="+this.curPage).then(res=>{
+                    console.log(res.data);
+                    if(res.data.state){
+                        this.moviesByPopulars = res.data.movies;
+                        alert(res.data.msg);
+                    }else{
+                        alert(res.data.msg);
+                    }
+                });
+            },
+            changePopular(){
+                if (this.curPage<10) {
+                    this.curPage++;
+                } else {
+                    this.curPage = 1;
                 }
+                this.getPopular();
             }
         },
         created(){
             var userString = localStorage.getItem("user");
             if(userString!=null){
-            this.user = JSON.parse(userString);
-            this.isLog = true;
+                this.user = JSON.parse(userString);
+                this.isLog = true;
             }else{
                 this.isLog = false;
             }
+            axios.get("http://127.0.0.1:8080/reputation").then(res=>{
+                console.log(res.data);
+                if(res.data.state){
+                    this.moviesByRatings = res.data.movies;
+                    alert(res.data.msg);
+                }else{
+                    alert(res.data.msg);
+                }
+            });
+            this.getPopular();
         }
     })
 </script>
-</html>

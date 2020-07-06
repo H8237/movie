@@ -28,7 +28,7 @@ public interface BaseDao<T> {
      * @throws Exception
      * @throws
      */
-    int insertBatch(List<T> entityList) throws Exception;
+    //int insertBatch(List<T> entityList) throws Exception;
 
     /**
      * 更新数据
