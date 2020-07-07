@@ -111,21 +111,28 @@
   </select>
 
   <insert id="insertUserLike" parameterType="Integer">
-		insert into user_like (MovieID, UserID)
-		values (#{MovieID}, #{UserID})
-	</insert>
+	insert into user_like (MovieID, UserID)
+	values (#{MovieID}, #{UserID})
+  </insert>
 
   <select id="findUserLikeByUser" parameterType="Integer" resultMap="BaseResultMap">
-        select
-        *
-        from user_like_movie_view
-        WHERE UserID = #{UserID}
-    </select>
+    select
+    *
+    from user_like_movie_view
+    WHERE UserID = #{UserID}
+   </select>
 
   <select id="findTopMoviesByType" parameterType="String" resultMap="BaseResultMap">
     select
     *
     from ${type}_topmovies_view
   </select>
+
+  <select id="findMovieByMovie" parameterType="Integer" resultMap="BaseResultMap">
+    select
+    *
+    from content_movies_view
+    WHERE BaseMovieID = #{BaseMovieID}
+   </select>
 
 </mapper>

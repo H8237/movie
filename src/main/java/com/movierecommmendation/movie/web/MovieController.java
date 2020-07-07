@@ -146,4 +146,23 @@ public class MovieController {
         }
         return map;
     }
+
+    @GetMapping("/moviesByMovie")
+    public Map<String, Object> MoviesByMovie(Integer movieid, Integer curPage){
+        Map<String, Object> map = new HashMap<>();
+        try {
+            Page<?> page = PageHelper.startPage(curPage, 5);
+            List<Movie> movies = movieService.findMovieByMovie(movieid,curPage);
+            Long total = page.getTotal();
+            map.put("state",true);
+            map.put("msg","查询相似电影成功");
+            map.put("movies",movies);
+            map.put("total",total);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("state",false);
+            map.put("msg","提示："+e.getMessage());
+        }
+        return map;
+    }
 }

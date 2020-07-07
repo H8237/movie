@@ -14,4 +14,5 @@ public interface MovieDao extends BaseDao<Movie> {
     boolean insertUserLike(@Param("MovieID") Integer MovieID, @Param("UserID") Integer UserID);
     List<Movie> findUserLikeByUser(@Param("UserID") Integer UserID);
     List<Movie> findTopMoviesByType(@Param("type") String type);
+    List<Movie> findMovieByMovie(@Param("BaseMovieID") Integer BaseMovieID);
 }

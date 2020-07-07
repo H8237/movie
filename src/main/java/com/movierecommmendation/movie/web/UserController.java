@@ -93,8 +93,9 @@ public class UserController {
             Rating rating = new Rating();
             rating.setUserId(1);
             rating.setMovieId(661);
-//            System.out.println(ratingService.findByPrimary(rating));
-            ratingService.execPythonTest();
+            rating = ratingService.findByPrimary(rating);
+            map.put("rating",rating);
+            //ratingService.execPythonTest();
         } catch (Exception e) {
             e.printStackTrace();
         }

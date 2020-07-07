@@ -28,7 +28,7 @@ public class MovieServiceImpl extends BaseServiceImpl<Movie> implements MovieSer
         try {
             list = getMapper().findByTitle(title);
         } catch (Exception e) {
-            logger.error("查询 title 失败!原因是:", e);
+            logger.error("标题搜索失败!原因是:", e);
         }
         return list;
     }
@@ -72,7 +72,7 @@ public class MovieServiceImpl extends BaseServiceImpl<Movie> implements MovieSer
         try{
             list = getMapper().findUserLikeByUser(UserID);
         } catch (Exception e){
-            logger.error("查询用户喜欢失败!原因是:", e);
+            logger.error("查询用户喜欢的电影失败!原因是:", e);
         }
         return list;
     }
@@ -83,7 +83,17 @@ public class MovieServiceImpl extends BaseServiceImpl<Movie> implements MovieSer
         try{
             list = getMapper().findTopMoviesByType(type);
         } catch (Exception e){
-            logger.error("查询用户喜欢失败!原因是:", e);
+            logger.error("查询分标签最热门失败!原因是:", e);
+        }
+        return list;
+    }
+    @Override
+    public List<Movie> findMovieByMovie(Integer BaseMovieID, Integer curPage){
+        List<Movie> list = null;
+        try{
+            list = getMapper().findMovieByMovie(BaseMovieID);
+        } catch (Exception e){
+            logger.error("查询相似电影失败!原因是:", e);
         }
         return list;
     }
