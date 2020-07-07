@@ -135,4 +135,25 @@
     WHERE BaseMovieID = #{BaseMovieID}
    </select>
 
+  <select id="findMovieByOnUser" parameterType="Integer" resultMap="BaseResultMap">
+    select
+    *
+    from on_user_view
+    WHERE UserID = #{UserID}
+   </select>
+
+  <select id="findMovieByOffUser" parameterType="Integer" resultMap="BaseResultMap">
+    select
+    *
+    from off_user_view
+    WHERE UserID = #{UserID}
+   </select>
+
+  <select id="findByType" parameterType="String" resultMap="BaseResultMap">
+    select
+    *
+    from movie
+    where type like CONCAT('%', ${type}, '%')
+  </select>
+
 </mapper>

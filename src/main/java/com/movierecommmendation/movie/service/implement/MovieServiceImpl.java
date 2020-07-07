@@ -97,4 +97,37 @@ public class MovieServiceImpl extends BaseServiceImpl<Movie> implements MovieSer
         }
         return list;
     }
+
+    @Override
+    public List<Movie> findMovieByOnUser(Integer UserID, Integer curPage){
+        List<Movie> list = null;
+        try{
+            list = getMapper().findMovieByOnUser(UserID);
+        } catch (Exception e){
+            logger.error("查询在线猜你喜欢失败!原因是:", e);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Movie> findMovieByOffUser(Integer UserID, Integer curPage){
+        List<Movie> list = null;
+        try{
+            list = getMapper().findMovieByOffUser(UserID);
+        } catch (Exception e){
+            logger.error("查询离线猜你喜欢失败!原因是:", e);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Movie> findByType(String type,Integer curPage){
+        List<Movie> list = null;
+        try{
+            list = getMapper().findByType(type);
+        } catch (Exception e){
+            logger.error("根据类型查询失败!原因是:", e);
+        }
+        return list;
+    }
 }

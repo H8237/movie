@@ -165,4 +165,61 @@ public class MovieController {
         }
         return map;
     }
+
+    @GetMapping("/moviesByOnUser")
+    public Map<String, Object> MoviesByOnUser(Integer userid, Integer curPage){
+        Map<String, Object> map = new HashMap<>();
+        try {
+            Page<?> page = PageHelper.startPage(curPage, 12);
+            List<Movie> movies = movieService.findMovieByOnUser(userid,curPage);
+            Long total = page.getTotal();
+            map.put("state",true);
+            map.put("msg","查询在线猜你喜欢电影成功");
+            map.put("movies",movies);
+            map.put("total",total);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("state",false);
+            map.put("msg","提示："+e.getMessage());
+        }
+        return map;
+    }
+
+    @GetMapping("/moviesByOffUser")
+    public Map<String, Object> MoviesByOffUser(Integer userid, Integer curPage){
+        Map<String, Object> map = new HashMap<>();
+        try {
+            Page<?> page = PageHelper.startPage(curPage, 12);
+            List<Movie> movies = movieService.findMovieByOffUser(userid,curPage);
+            Long total = page.getTotal();
+            map.put("state",true);
+            map.put("msg","查询离线猜你喜欢电影成功");
+            map.put("movies",movies);
+            map.put("total",total);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("state",false);
+            map.put("msg","提示："+e.getMessage());
+        }
+        return map;
+    }
+    @GetMapping("/genres")
+    public Map<String, Object> MoviesByType(String genres, Integer curPage){
+        Map<String, Object> map = new HashMap<>();
+        logger.info(genres);
+        try {
+            Page<?> page = PageHelper.startPage(curPage, 24);
+            List<Movie> movies = movieService.findByType(genres,curPage);
+            Long total = page.getTotal();
+            map.put("state",true);
+            map.put("msg","分类查询电影成功");
+            map.put("movies",movies);
+            map.put("total",total);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("state",false);
+            map.put("msg","提示："+e.getMessage());
+        }
+        return map;
+    }
 }

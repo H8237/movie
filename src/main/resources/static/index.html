@@ -736,7 +736,8 @@
 								<div class="clearfix"> </div>
 								<div class="agileinfo_flexislider_grids">
 									<div class="col-md-2 w3l-movie-gride-agile" v-for="moviesByRating in moviesByRatings">
-										<a :href="'/movie.html?movieId='+moviesByRating.movieid" @mouseover="changeRatingShow(moviesByRating)" class="hvr-shutter-out-horizontal"><img id="pic" :src="'/images/M/'+moviesByRating.movieid+'.webp'" title="album-name" class="img-responsive" alt=" " />
+										<a :href="'/movie.html?movieId='+moviesByRating.movieid" @mouseover="changeRatingShow(moviesByRating)" class="hvr-shutter-out-horizontal">
+											<img id="pic" :src="'/images/M/'+moviesByRating.movieid+'.webp'" title="album-name" class="img-responsive" alt=" " />
 											<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
 										</a>
 										<div class="mid-1 agileits_w3layouts_mid_1_home .title_height">

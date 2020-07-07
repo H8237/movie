@@ -12,5 +12,8 @@ public interface MovieService extends BaseService<Movie> {
     List<Movie> findUserLikeByUser(Integer UserID);
     boolean insertUserLike(Integer MovieID, Integer UserID);
     List<Movie> findTopMoviesByType(String type, Integer curPage);
-    List<Movie> findMovieByMovie(Integer BaseMovieI, Integer curPage);
+    List<Movie> findMovieByMovie(Integer BaseMovieID, Integer curPage);
+    List<Movie> findMovieByOnUser(Integer UserID, Integer curPage);
+    List<Movie> findMovieByOffUser(Integer UserID, Integer curPage);
+    List<Movie> findByType(String type,Integer curPage);
 }
