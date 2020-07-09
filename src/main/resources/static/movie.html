@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Single</title>
+<title>单部详情页</title>
 <!-- for-mobile-apps -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -67,65 +67,76 @@
 </script>
 
 </head>
-	
+
 <body>
-<!-- header -->
 <div id="wrap">
+	<!-- header -->
 	<div class="header">
 		<div class="container">
 			<div class="w3layouts_logo">
-				<a href="index.html"><h1>One<span>Movies</span></h1></a>
+				<a href="index.html"><h1>Movies</h1></a>
 			</div>
 			<div class="w3_search">
-				<form action="#" method="post">
-					<input type="text" name="Search" placeholder="Search" required="">
-					<input type="submit" value="Go">
+				<form action="/search.html" method="get">
+					<input type="text" name="movieName" placeholder="Search" required="">
+					<input type="text" name="curPage" placeholder="Search" required="" value="1" v-show="false">
+					<input type="submit"  value="Go">
 				</form>
 			</div>
 			<div class="w3l_sign_in_register">
 				<ul>
-					<li><i class="fa fa-phone" aria-hidden="true"></i> (+000) 123 345 653</li>
-					<li><a href="#" data-toggle="modal" data-target="#myModal">Login</a></li>
+					<li><a href="#" data-toggle="modal" data-target="#myModal" v-if="!isLog">登录</a></li>
+					<li><a href="javascript:;" @click="logout" v-if="isLog">注销</a></li>
 				</ul>
 			</div>
 			<div class="clearfix"> </div>
 		</div>
 	</div>
-<!-- //header -->
-<!-- bootstrap-pop-up -->
+	<!-- //header -->
+	<!-- bootstrap-pop-up -->
 	<div class="modal video-modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					Sign In & Sign Up
+					登录 & 注销
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				</div>
 				<section>
 					<div class="modal-body">
 						<div class="w3_login_module">
 							<div class="module form-module">
-							  <div class="toggle"><i class="fa fa-times fa-pencil"></i>
-								<div class="tooltip">Click Me</div>
-							  </div>
-							  <div class="form">
-								<h3>Login to your account</h3>
-								<form action="#" method="post">
-								  <input type="text" name="Username" placeholder="Username" required="">
-								  <input type="password" name="Password" placeholder="Password" required="">
-								  <input type="submit" value="Login">
-								</form>
-							  </div>
-							  <div class="form">
-								<h3>Create an account</h3>
-								<form action="#" method="post">
-								  <input type="text" name="Username" placeholder="Username" required="">
-								  <input type="password" name="Password" placeholder="Password" required="">
-								  <input type="email" name="Email" placeholder="Email Address" required="">
-								  <input type="text" name="Phone" placeholder="Phone Number" required="">
-								  <input type="submit" value="Register">
-								</form>
-							  </div>
-							  <div class="cta"><a href="#">Forgot your password?</a></div>
+								<div class="toggle"><i class="fa fa-times fa-pencil"></i>
+									<div class="tooltip">注册</div>
+								</div>
+								<div class="form">
+									<h3>请登录您的账户</h3>
+									<form action="#" method="post">
+										<input type="text" name="Username" placeholder="用户名" required="" v-model="user.username">
+										<input type="password" name="Password" placeholder="密码" required="" v-model="user.password">
+										<input type="submit" class="ok" onclick="this.disabled=true" @click="login" value="登录">
+									</form>
+								</div>
+								<div class="form">
+									<h3>创建新账户</h3>
+									<form action="#" method="post">
+										<input type="text" name="Username" placeholder="用户名" required="" v-model="user.username">
+										<input type="password" name="Password" placeholder="密码" required="" v-model="user.password">
+										<input class="occupation" type="text" list="listItem3" placeholder="职业" v-model="user.occupation"><br>
+										<datalist id="listItem3">
+											<option value="0">其它</option>
+											<option value="1">学术/教育工作者</option>
+											<option value="2">艺术家</option>
+										</datalist>
+										<input class="gender" type="text" list="listItem4" placeholder="性别" v-model="user.gender"><br>
+										<datalist id="listItem4">
+											<option value="M">男</option>
+											<option value="F">女</option>
+										</datalist>
+										<input type="text" name="age" placeholder="年龄" required="" v-model="user.age">
+										<input type="text" name="zipcode" placeholder="邮编" required="" v-model="user.zipcode">
+										<input type="submit" class="ok" onclick="this.disabled=true" @click="register" value="注册">
+									</form>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -133,21 +144,8 @@
 			</div>
 		</div>
 	</div>
-	<script>
-		$('.toggle').click(function(){
-		  // Switches the Icon
-		  $(this).children('i').toggleClass('fa-pencil');
-		  // Switches the forms
-		  $('.form').animate({
-			height: "toggle",
-			'padding-top': 'toggle',
-			'padding-bottom': 'toggle',
-			opacity: "toggle"
-		  }, "slow");
-		});
-	</script>
-<!-- //bootstrap-pop-up -->
-<!-- nav -->
+	<!-- //bootstrap-pop-up -->
+	<!-- nav -->
 	<div class="movies_nav">
 		<div class="container">
 			<nav class="navbar navbar-default">
@@ -163,114 +161,93 @@
 				<div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
 					<nav>
 						<ul class="nav navbar-nav">
-							<li class="w3_home_act"><a href="index.html">Home</a></li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Genres <b class="caret"></b></a>
+							<li class="w3_home_act"><a href="index.html">主页</a></li>
+							<li class="dropdown active">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">分类 <b class="caret"></b></a>
 								<ul class="dropdown-menu multi-column columns-3">
 									<li>
 										<div class="col-sm-4">
 											<ul class="multi-column-dropdown">
-												<li><a href="genres.html">Action</a></li>
-												<li><a href="genres.html">Biography</a></li>
-												<li><a href="genres.html">Crime</a></li>
-												<li><a href="genres.html">Family</a></li>
-												<li><a href="horror.html">Horror</a></li>
-												<li><a href="genres.html">Romance</a></li>
-												<li><a href="genres.html">Sports</a></li>
-												<li><a href="genres.html">War</a></li>
+												<li><a href="genres.html?genres=爱情&curPage=1">爱情</a></li>
+												<li><a href="genres.html?genres=奇幻&curPage=1">奇幻</a></li>
+												<li><a href="genres.html?genres=科幻&curPage=1">科幻</a></li>
+												<li><a href="genres.html?genres=儿童&curPage=1">儿童</a></li>
+												<li><a href="genres.html?genres=家庭&curPage=1">家庭</a></li>
+												<li><a href="genres.html?genres=音乐&curPage=1">音乐</a></li>
+												<li><a href="genres.html?genres=冒险&curPage=1">冒险</a></li>
+												<li><a href="genres.html?genres=动画&curPage=1">动画</a></li>
 											</ul>
 										</div>
 										<div class="col-sm-4">
 											<ul class="multi-column-dropdown">
-												<li><a href="genres.html">Adventure</a></li>
-												<li><a href="comedy.html">Comedy</a></li>
-												<li><a href="genres.html">Documentary</a></li>
-												<li><a href="genres.html">Fantasy</a></li>
-												<li><a href="genres.html">Thriller</a></li>
+												<li><a href="genres.html?genres=惊悚&curPage=1">惊悚</a></li>
+												<li><a href="genres.html?genres=悬念&curPage=1">悬念</a></li>
+												<li><a href="genres.html?genres=动作&curPage=1">动作</a></li>
+												<li><a href="genres.html?genres=灾难&curPage=1">灾难</a></li>
+												<li><a href="genres.html?genres=短片&curPage=1">短片</a></li>
+												<li><a href="genres.html?genres=西部&curPage=1">西部</a></li>
+												<li><a href="genres.html?genres=恐怖&curPage=1">恐怖</a></li>
+												<li><a href="genres.html?genres=历史&curPage=1">历史</a></li>
 											</ul>
 										</div>
 										<div class="col-sm-4">
 											<ul class="multi-column-dropdown">
-												<li><a href="genres.html">Animation</a></li>
-												<li><a href="genres.html">Costume</a></li>
-												<li><a href="genres.html">Drama</a></li>
-												<li><a href="genres.html">History</a></li>
-												<li><a href="genres.html">Musical</a></li>
-												<li><a href="genres.html">Psychological</a></li>
+												<li><a href="genres.html?genres=犯罪&curPage=1">犯罪</a></li>
+												<li><a href="genres.html?genres=悬疑&curPage=1">悬疑</a></li>
+												<li><a href="genres.html?genres=剧情&curPage=1">剧情</a></li>
+												<li><a href="genres.html?genres=荒诞&curPage=1">荒诞</a></li>
+												<li><a href="genres.html?genres=运动&curPage=1">运动</a></li>
+												<li><a href="genres.html?genres=传记&curPage=1">传记</a></li>
+												<li><a href="genres.html?genres=喜剧&curPage=1">喜剧</a></li>
 											</ul>
 										</div>
 										<div class="clearfix"></div>
 									</li>
 								</ul>
 							</li>
-							<li><a href="series.html">tv - series</a></li>
-							<li><a href="news.html">news</a></li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Country <b class="caret"></b></a>
-								<ul class="dropdown-menu multi-column columns-3">
-									<li>
-										<div class="col-sm-4">
-											<ul class="multi-column-dropdown">
-												<li><a href="genres.html">Asia</a></li>
-												<li><a href="genres.html">France</a></li>
-												<li><a href="genres.html">Taiwan</a></li>
-												<li><a href="genres.html">United States</a></li>
-											</ul>
-										</div>
-										<div class="col-sm-4">
-											<ul class="multi-column-dropdown">
-												<li><a href="genres.html">China</a></li>
-												<li><a href="genres.html">HongCong</a></li>
-												<li><a href="genres.html">Japan</a></li>
-												<li><a href="genres.html">Thailand</a></li>
-											</ul>
-										</div>
-										<div class="col-sm-4">
-											<ul class="multi-column-dropdown">
-												<li><a href="genres.html">Euro</a></li>
-												<li><a href="genres.html">India</a></li>
-												<li><a href="genres.html">Korea</a></li>
-												<li><a href="genres.html">United Kingdom</a></li>
-											</ul>
-										</div>
-										<div class="clearfix"></div>
-									</li>
-								</ul>
-							</li>
-							<li><a href="short-codes.html">Short Codes</a></li>
-							<li><a href="list.html">A - z list</a></li>
+							<li><a href="series.html">推荐</a></li>
+							<li><a href="news.html">我的电影</a></li>
+
+						</ul>
+						</li>
+
 						</ul>
 					</nav>
 				</div>
 			</nav>
 		</div>
 	</div>
-<!-- //nav -->
-<div class="general_social_icons">
-	<nav class="social">
-		<ul>
-			<li class="w3_twitter"><a href="#">Twitter <i class="fa fa-twitter"></i></a></li>
-			<li class="w3_facebook"><a href="#">Facebook <i class="fa fa-facebook"></i></a></li>
-			<li class="w3_dribbble"><a href="#">Dribbble <i class="fa fa-dribbble"></i></a></li>
-			<li class="w3_g_plus"><a href="#">Google+ <i class="fa fa-google-plus"></i></a></li>
-		</ul>
-  </nav>
-</div>
+	<!-- //nav -->
+
+
+	<div class="general_social_icons">
+		<nav class="social">
+			<ul>
+				<li class="w3_twitter"><a href="index.html">主页 <i class="fa fa-asterisk"></i></a></li>
+				<li class="w3_facebook"><a href="series.html">推荐 <i class="fa fa-book"></i></a></li>
+				<li class="w3_dribbble"><a href="news.html">个人 <i class="fa fa-user"></i></a></li>
+				<li class="w3_g_plus"><a href="faq.html">问答 <i class="fa fa-thumbs-up"></i></a></li>
+			</ul>
+		</nav>
+	</div>
+	<!-- /w3l-medile-movies-grids -->
 <!-- single -->
 <div class="single-page-agile-main">
 <div class="container">
+
 		<!-- /w3l-medile-movies-grids -->
 			<div class="agileits-single-top">
 				<ol class="breadcrumb">
-				  <li><a href="index.html">Home</a></li>
-				  <li class="active">Single</li>
+				  <li><a href="index.html">主页</a></li>
+				  <li class="active">单部信息</li>
 				</ol>
 			</div>
 			<div class="single-page-agile-info">
                    <!-- /movie-browse-agile -->
                            <div class="show-top-grids-w3lagile">
 <!-------------------------------------------------海报及简介-------------------------------------------->
-				<div class="col-sm-8 single-left">
+
+							   <div class="col-sm-7 single-left">
 
 					<div class="song">
 						<div class="song-info">
@@ -281,150 +258,53 @@
 						</div>
 					</div>
 					<div class="intro">
-						<li class="director">导演:{{movie.director}}</li>
-						<li class="writer">编剧:{{movie.scriptwriter}}</li>
-						<li class="starring">主演:{{movie.starring}}</li>
-						<li class="type">类型:{{movie.type}}</li>
-						<li class="date">上映日期:{{movie.relaseDate}}</li>
-						<li class="length">片长:{{movie.runningTime}}分钟</li>
-					</div>
-					<div class="rating">
-						<fieldset class="rating">
-							<input type="radio" id="star5" name="rating" value="5" v-model="movie.rating" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
-							<input type="radio" id="star4" name="rating" value="4" v-model="movie.rating" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
-							<input type="radio" id="star3" name="rating" value="3" v-model="movie.rating" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
-							<input type="radio" id="star2" name="rating" value="2" v-model="movie.rating" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
-							<input type="radio" id="star1" name="rating" value="1" v-model="movie.rating" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
-						</fieldset>
-						<div>
-							<li class="num">评分人数：{{movie.ratingPeople}}</li>
+						<li class="director">导演：{{movie.director}}<li/>
+						<li class="writer">编剧：{{movie.scriptwriter}}</li>
+						<li class="starring">主演：{{movie.starring}}</li>
+						<li class="type">类型：{{movie.type}}</li>
+						<li class="date">上映日期：{{movie.relaseDate}}</li>
+						<li class="length">片长：{{movie.runningTime}}分钟</li>
+					    <li class="num">评分：{{movie.rating}}</li>
+						<li class="num">评分人数：{{movie.ratingPeople}}</li>
+						<li v-if="isLog"><b>您的评分：</b></li>
+
+
+									   <div class="reviews" v-if="isLog">
+										   <div>
+											   <fieldset class="rating">
+											   <input type="radio" name="rating" value="5" v-model="Rating.rating" /><label class = "full" @click="rating(5)" for="star5" title="Awesome - 5 stars"></label>
+											   <input type="radio" name="rating" value="4" v-model="Rating.rating" /><label class = "full" @click="rating(4)" for="star4" title="Pretty good - 4 stars"></label>
+											   <input type="radio" name="rating" value="3" v-model="Rating.rating" /><label class = "full" @click="rating(3)" for="star3" title="Meh - 3 stars"></label>
+											   <input type="radio" name="rating" value="2" v-model="Rating.rating" /><label class = "full" @click="rating(2)" for="star2" title="Kinda bad - 2 stars"></label>
+											   <input type="radio" name="rating" value="1" v-model="Rating.rating" /><label class = "full" @click="rating(1)" for="star1" title="Sucks big time - 1 star"></label>
+											   </fieldset>
+										   </div>
+
+								   <div class="clearfix"> </div>
+								   <div class="like" v-if="isLog">
+									   <b>喜欢</b>
+									   <i class="like-item" @click="likeAndUnlike" :class="isLike?'press':''"></i>
+									   <span class="like-text">liked!</span>
+								   <div class="clearfix"> </div>
+								   </div>
+
 						</div>
-					</div>
-					<div class="clearfix"> </div>
-					<div class="article">
-						<p class="synopsis">{{movie.title}}剧情简介</p>
-						<p style="white-space: pre-line;" v-html="movie.introduction"></p>
-					</div>
+
+						</div>
+								   <div class="article">
+									   <p class="synopsis"><b>剧情简介</b></p>
+									   <p style="white-space: pre-line;" v-html="movie.introduction"></p>
 					<!--第三部分用户点评-->
-					<div class="reviews">
-						<div @click="rating">
-							<fieldset class="rating">
-								<input type="radio" name="rating" value="5" v-model="Rating.rating" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
-								<input type="radio" name="rating" value="4" v-model="Rating.rating" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
-								<input type="radio" name="rating" value="3" v-model="Rating.rating" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
-								<input type="radio" name="rating" value="2" v-model="Rating.rating" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
-								<input type="radio" name="rating" value="1" v-model="Rating.rating" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
-							</fieldset>
-						</div>
-					</div>
-					<p>{{Rating.rating}}</p>
+
+
+
 					<div class="clearfix"> </div>
-					<div class="like">
-						<i class="like-item" @click="like"></i>
-						<span class="like-text">liked!</span>
-					</div>
+</div>
 
-					<div class="song-grid-right">
-						<div class="share">
-							<h5>Share this</h5>
-							<div class="single-agile-shar-buttons">
-							<ul>
-								<li>
-									<div class="fb-like" data-href="https://www.facebook.com/w3layouts" data-layout="button_count" data-action="like" data-size="small" data-show-faces="false" data-share="false"></div>
-									<script>(function(d, s, id) {
-									  var js, fjs = d.getElementsByTagName(s)[0];
-									  if (d.getElementById(id)) return;
-									  js = d.createElement(s); js.id = id;
-									  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.7";
-									  fjs.parentNode.insertBefore(js, fjs);
-									}(document, 'script', 'facebook-jssdk'));</script>
-								</li>
-								<li>
-									<div class="fb-share-button" data-href="https://www.facebook.com/w3layouts" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.facebook.com%2Fw3layouts&amp;src=sdkpreparse">Share</a></div>
-								</li>
-								<li class="news-twitter">
-									<a href="https://twitter.com/w3layouts" class="twitter-follow-button" data-show-count="false">Follow @w3layouts</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-								</li>
-								<li>
-									<a href="https://twitter.com/intent/tweet?screen_name=w3layouts" class="twitter-mention-button" data-show-count="false">Tweet to @w3layouts</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-								</li>
-								<li>
-									<!-- Place this tag where you want the +1 button to render. -->
-									<div class="g-plusone" data-size="medium"></div>
-
-									<!-- Place this tag after the last +1 button tag. -->
-									<script type="text/javascript">
-									  (function() {
-										var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-										po.src = 'https://apis.google.com/js/platform.js';
-										var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-									  })();
-									</script>
-								</li>
-							</ul>
-						</div>
-						</div>
-					</div>
-					<div class="clearfix"> </div>
-
-					<div class="all-comments">
-						<div class="all-comments-info">
-							<a href="#">Comments</a>
-							<div class="agile-info-wthree-box">
-								<form>
-									<input type="text" placeholder="Name" required="">
-									<input type="text" placeholder="Email" required="">
-									<input type="text" placeholder="Phone" required="">
-									<textarea placeholder="Message" required=""></textarea>
-									<input type="submit" value="SEND">
-									<div class="clearfix"> </div>
-								</form>
-							</div>
-						</div>
-						<div class="media-grids">
-							<div class="media">
-								<h5>TOM BROWN</h5>
-								<div class="media-left">
-									<a href="#">
-										<img src="images/user.jpg" title="One movies" alt=" " />
-									</a>
-								</div>
-								<div class="media-body">
-									<p>Maecenas ultricies rhoncus tincidunt maecenas imperdiet ipsum id ex pretium hendrerit maecenas imperdiet ipsum id ex pretium hendrerit</p>
-									<span>View all posts by :<a href="#"> Admin </a></span>
-								</div>
-							</div>
-							<div class="media">
-								<h5>MARK JOHNSON</h5>
-								<div class="media-left">
-									<a href="#">
-									<img src="images/user.jpg" title="One movies" alt=" " />
-									</a>
-								</div>
-								<div class="media-body">
-									<p>Maecenas ultricies rhoncus tincidunt maecenas imperdiet ipsum id ex pretium hendrerit maecenas imperdiet ipsum id ex pretium hendrerit</p>
-									<span>View all posts by :<a href="#"> Admin </a></span>
-								</div>
-							</div>
-							<div class="media">
-								<h5>STEVEN SMITH</h5>
-								<div class="media-left">
-									<a href="#">
-									<img src="images/user.jpg" title="One movies" alt=" " />
-									</a>
-								</div>
-								<div class="media-body">
-									<p>Maecenas ultricies rhoncus tincidunt maecenas imperdiet ipsum id ex pretium hendrerit maecenas imperdiet ipsum id ex pretium hendrerit</p>
-									<span>View all posts by :<a href="#"> Admin </a></span>
-								</div>
-							</div>
-
-						</div>
-					</div>
 				</div>
 <!-----------------------------------右侧热门----------------------------------------->
 				<div class="col-md-4 single-right">
-					<h3>最热门</h3>
+					<h3>你可能喜欢</h3>
 					<div class="single-grid-right" v-for="moviesByPopular in moviesByPopulars">
 						<div class="single-right-grids">
 							<div class="col-md-4 single-right-grid-left">
@@ -442,250 +322,310 @@
 					</div>
 				</div>
 
+<!-----------------------------------相似电影----------------------------------------->
 				<div class="clearfix"> </div>
+
+							   <h1>相似电影</h1>
+
+							   <div class="container">
+								   <section class="slider">
+									   <div class="flexslider">
+										   <ul class="slides">
+											   <li>
+												   <div class="agile_tv_series_grid">
+
+
+													   <div class="clearfix"> </div>
+													   <div class="agileinfo_flexislider_grids">
+														   <div class="col-md-2 w3l-movie-gride-agile" v-for="moviesByMovie in moviesByMovies">
+															   <a :href="'/movie.html?movieId='+moviesByMovie.movieid" class="hvr-shutter-out-horizontal">
+																   <img :src="'/images/M/'+moviesByMovie.movieid+'.webp'" title="album-name" class="img-responsive" alt=" " />
+																   <div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
+															   </a>
+															   <div class="mid-1 agileits_w3layouts_mid_1_home title_height">
+																   <div class="w3l-movie-text">
+																	   <h6><a :href="'/movie.html?movieId='+moviesByMovie.movieid">{{moviesByMovie.title}}</a></h6>
+																   </div>
+																   <div class="mid-2 agile_mid_2_home">
+																	   <div class="clearfix"></div>
+
+																   </div>
+																   <div class="ribben">
+																	   <p>推荐</p>
+																   </div>
+															   </div>
+															   <div class="clearfix"> </div>
+														   </div>
+													   </div>
+												   </div>
+											   </li>
+										   </ul>
+									   </div>
+								   </section>
+							   </div>
 			</div>
-				<!-- //movie-browse-agile -->
-				<!--body wrapper start-->
-<!--------------------------------------------------------相似电影------------------------------------------->
-<div style="display: flex;">
-						<div v-for="moviesByMovie in moviesByMovies">
-							<a :href="'/movie.html?movieId='+moviesByMovie.movieid" class="hvr-shutter-out-horizontal">
-								<img :src="'/images/M/'+moviesByMovie.movieid+'.webp'" title="album-name" class="img-responsive" alt=" " />
-								<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-							</a>
-							<div class="mid-1 agileits_w3layouts_mid_1_home">
-								<div class="w3l-movie-text">
-									<h6><a :href="'/movie.html?movieId='+moviesByMovie.movieid">{{moviesByMovie.title}}</a></h6>
-								</div>
-								<div class="mid-2 agile_mid_2_home">
-									<p>{{moviesByMovie.relaseDate}}</p>
-									<div class="clearfix"></div>
-								</div>
-							</div>
-							<div class="ribben">
-								<p>NEW</p>
-							</div>
-						</div>
-</div>
 
-		<!--body wrapper end-->
-
-
-				</div>
-				<!-- //w3l-latest-movies-grids -->
-			</div>
-		</div>
-	<!-- //w3l-medile-movies-grids -->
 
 <!-- footer -->
-	<div class="footer">
-		<div class="container">
-			<div class="w3ls_footer_grid">
-				<div class="col-md-6 w3ls_footer_grid_left">
-					<div class="w3ls_footer_grid_left1">
-						<h2>Subscribe to us</h2>
-						<div class="w3ls_footer_grid_left1_pos">
-							<form action="#" method="post">
-								<input type="email" name="email" placeholder="Your email..." required="">
-								<input type="submit" value="Send">
-							</form>
+				<div class="footer">
+					<div class="container">
+
+						<div class="col-md-5 w3ls_footer_grid1_left">
+							<p>由 &copy; 电影之友小组制作</p>
 						</div>
+						<div class="col-md-7 w3ls_footer_grid1_right">
+							<ul>
+
+								<li><a href="genres.html?genres=冒险&curPage=1">冒险</a></li>
+								<li><a href="genres.html?genres=科幻&curPage=1">科幻</a></li>
+								<li><a href="genres.html?genres=犯罪&curPage=1">犯罪</a></li>
+								<li><a href="genres.html?genres=悬疑&curPage=1">悬疑</a></li>
+								<li><a href="genres.html?genres=剧情&curPage=1">剧情</a></li>
+								<li><a href="genres.html?genres=荒诞&curPage=1">荒诞</a></li>
+							</ul>
+						</div>
+						<div class="clearfix"> </div>
 					</div>
 				</div>
-				<div class="col-md-6 w3ls_footer_grid_right">
-					<a href="index.html"><h2>One<span>Movies</span></h2></a>
-				</div>
-				<div class="clearfix"> </div>
-			</div>
-			<div class="col-md-5 w3ls_footer_grid1_left">
-				<p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://www.17sucai.com/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a></p>
-			</div>
-			<div class="col-md-7 w3ls_footer_grid1_right">
-				<ul>
-					<li>
-						<a href="genres.html">Movies</a>
-					</li>
-					<li>
-						<a href="faq.html">FAQ</a>
-					</li>
-					<li>
-						<a href="horror.html">Action</a>
-					</li>
-					<li>
-						<a href="genres.html">Adventure</a>
-					</li>
-					<li>
-						<a href="comedy.html">Comedy</a>
-					</li>
-					<li>
-						<a href="icons.html">Icons</a>
-					</li>
-					<li>
-						<a href="contact.html">Contact Us</a>
-					</li>
-				</ul>
-			</div>
-			<div class="clearfix"> </div>
-		</div>
-	</div>
-<!-- //footer -->
+
+
+
+				<!-- //footer -->
 </div>
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap.min.js"></script>
-<script>
-$(document).ready(function(){
-    $(".dropdown").hover(
-        function() {
-            $('.dropdown-menu', this).stop( true, true ).slideDown("fast");
-            $(this).toggleClass('open');
-        },
-        function() {
-            $('.dropdown-menu', this).stop( true, true ).slideUp("fast");
-            $(this).toggleClass('open');
-        }
-    );
-});
-</script>
 <!-- //Bootstrap Core JavaScript -->
 <!-- here stars scrolling icon -->
-	<script type="text/javascript">
-		$(document).ready(function() {
-			/*
-				var defaults = {
-				containerID: 'toTop', // fading element id
-				containerHoverID: 'toTopHover', // fading element hover id
-				scrollSpeed: 1200,
-				easingType: 'linear'
-				};
-			*/
-
-			$().UItoTop({ easingType: 'easeOutQuart' });
-
-			});
-	</script>
 <!-- //here ends scrolling icon -->
 </body>
 <script src="/js/vue.js"></script>
 <script src="/js/axios.min.js"></script>
 <script>
 	var app = new Vue({
-		el:"#wrap",
-		data:{
-			user:{
-				username:"",
+		el: "#wrap",
+		data: {
+			user: {
+				username: "",
 			},
-			isLog:"false",
-			movie:{},
-			date:new Date(),
-			isLike:"false",
-			Rating:{
-				userId:1,
-				movieId:1,
-				rating:3,
-				timestamp:parseInt(+new Date()/1000),
+			isLog: "false",
+			movie: {},
+			date: new Date(),
+			isLike: "false",
+			Rating: {
+				userId: 1,
+				movieId: 1,
+				rating: 0,
+				timestamp: parseInt(+new Date() / 1000),
 			},
-			moviesByPopulars:[],
-			curPage:1,
-			moviesByMovies:[],
-			moviePage:1,
+			moviesByPopulars: [],
+			curPage: 1,
+			moviesByMovies: [],
+			moviePage: 1,
+			localRating:1,
 		},
-		methods:{
-			logout(){//注销
+		methods: {
+			logout() {//注销
+				var _this = this.user;
+				if (_this != null) {
+					localStorage.removeItem("user");
+					location.reload(true);
+				}
+			},
+			like() {
+				axios.get("http://127.0.0.1:8080/addUserLike?movieId=" + this.movie.movieid +
+						"&userId=" + this.user.id).then(res => {
+					console.log(res.data);
+					if (res.data.state) {
+						this.isLike = true;
+					} else {
+						alert(res.data.msg);
+					}
+				});
+			},
+			unlike() {
+				axios.get("http://127.0.0.1:8080/deleteUserLike?movieId=" + this.movie.movieid +
+						"&userId=" + this.user.id).then(res => {
+					console.log(res.data);
+					if (res.data.state) {
+						this.isLike = false;
+					} else {
+						alert(res.data.msg);
+					}
+				});
+			},
+			likeAndUnlike(){
+				if(this.isLike){
+					this.unlike();
+				}else{
+					this.like();
+				}
+			},
+			isUserLike(mid){
+				axios.get("http://127.0.0.1:8080/isUserLike?movieId="+mid+
+						"&userId="+this.user.id).then(res=>{
+					console.log(res.data);
+					if(res.data.state){
+						this.isLike = true;
+					}else{
+						this.isLike = false;
+					}
+				});
+			},
+			rating(score) {
+				this.Rating.rating = score;
+				axios.post("http://127.0.0.1:8080/AddUserRating", this.Rating).then(res => {
+					console.log(res.data);
+					if (res.data.state) {
+						alert(res.data.msg);
+						console.log(this.Rating);
+					} else {
+						alert(res.data.msg);
+					}
+				});
+				this.isRating();
+			},
+			getPopular() {
+				axios.get("http://127.0.0.1:8080/popularMovie?curPage=" + this.curPage).then(res => {
+					console.log(res.data);
+					if (res.data.state) {
+						this.moviesByPopulars = res.data.movies;
+						this.moviePopularShow = this.moviesByPopulars[0];
+					} else {
+						alert(res.data.msg);
+					}
+				});
+			},
+			getMoviesByMovie(id) {
+				axios.get("http://127.0.0.1:8080/moviesByMovie?movieid=" + id + "&curPage=" + this.moviePage).then(res => {
+					console.log(res.data);
+					if (res.data.state) {
+						this.moviesByMovies = res.data.movies;
+					} else {
+						alert(res.data.msg);
+					}
+				});
+			},
+			isRating(){
+				axios.post("http://127.0.0.1:8080/isUserRating", this.Rating).then(res => {
+					console.log(res.data);
+					if (res.data.state) {
+						this.Rating = res.data.rating;
+					} else {
+						//alert(res.data.msg);
+					}
+				});
+			},login(){
+				axios.post("http://127.0.0.1:8080/login",this.user).then(res=>{
+					console.log(res.data);
+					if(res.data.state){
+						alert(res.data.msg);
+						localStorage.setItem("user",JSON.stringify(res.data.user));
+						location.href = "/index.html";
+					}else{
+						alert(res.data.msg);
+					}
+				});
+			},
+			logout(){
 				var _this = this.user;
 				if(_this!=null) {
 					localStorage.removeItem("user");
 					location.reload(true);
 				}
 			},
-			like(){
-				$( ".like-item,.like-text" ).toggleClass( "press", 1000 );
-				axios.get("http://127.0.0.1:8080/addUserLike?movieId="+this.movie.movieid+
-						"&userId="+this.user.id).then(res=>{
+			register(){
+				axios.post("http://127.0.0.1:8080/register",this.user).then(res=>{
 					console.log(res.data);
 					if(res.data.state){
-						this.isLike = true;
-					}else{
-						alert(res.data.msg);
-					}
-				});
-			},
-			rating(){
-				console.log(this.Rating);
-				axios.post("http://127.0.0.1:8080/AddUserRating",this.Rating).then(res=>{
-					console.log(res.data);
-					if(res.data.state){
-						alert(res.data.msg);
-					}else{
-						alert(res.data.msg);
-					}
-				});
-			},
-			getPopular(){
-				axios.get("http://127.0.0.1:8080/popularMovie?curPage="+this.curPage).then(res=>{
-					console.log(res.data);
-					if(res.data.state){
-						this.moviesByPopulars = res.data.movies;
-						this.moviePopularShow = this.moviesByPopulars[0];
-					}else{
-						alert(res.data.msg);
-					}
-				});
-			},
-			getMoviesByMovie(id){
-				axios.get("http://127.0.0.1:8080/moviesByMovie?movieid="+id+"&curPage="+this.moviePage).then(res=>{
-					console.log(res.data);
-					if(res.data.state){
-						this.moviesByMovies = res.data.movies;
+						alert(res.data.msg+"，点击回到首页");
+						location.href="/index.html";
 					}else{
 						alert(res.data.msg);
 					}
 				});
 			},
 		},
-		created(){
+		created() {
 			//判断用户是否登录并获得用户信息
 			var userString = localStorage.getItem("user");
-			if(userString!=null){
+			if (userString != null) {
 				this.user = JSON.parse(userString);
 				this.Rating.userId = this.user.id;
 				this.isLog = true;
-			}else{
+			} else {
 				this.isLog = false;
 			}
 			//获取当前电影信息
-			let id = location.href.substring(location.href.indexOf("=")+1);
-			axios.get("http://127.0.0.1:8080/movieDetails?movieId="+id).then(res=>{
+			let id = location.href.substring(location.href.indexOf("=") + 1);
+			axios.get("http://127.0.0.1:8080/movieDetails?movieId=" + id).then(res => {
 				console.log(res.data);
-				if(res.data.state){
+				if (res.data.state) {
 					this.movie = res.data.movies;
-					this.movie.rating = parseInt(this.movie.rating/2);
-				}else{
+					this.movie.rating = parseInt(this.movie.rating / 2);
+					//处理字符串中的特殊字符
+					var str = this.movie.introduction;
+					str = str.replace(/\\u3000/g, "");
+					str = str.replace(/\\n/g, "<br/>");
+					this.movie.introduction = str;
+				} else {
 					alert(res.data.msg);
 				}
 			});
 			this.Rating.movieId = id;
-			axios.post("http://127.0.0.1:8080/isUserRating",this.Rating).then(res=>{
-				console.log(res.data);
-				if(res.data.state){
-					this.Rating = res.data.rating;
-				}else{
-					alert(res.data.msg);
-				}
-			});
+			this.isRating();
 			this.getPopular();
 			this.getMoviesByMovie(id);
+			this.isUserLike(id);
 		},
-		mounted(){//实时显示时间
+		mounted() {
+			//实时显示时间
 			var _this = this;
-			this.timer = setInterval(function(){
+			this.timer = setInterval(function () {
 				_this.date = new Date().toLocaleString();
-			},1000);
+			}, 1000);
+			$('.toggle').click(function(){
+				// Switches the Icon
+				$(this).children('i').toggleClass('fa-pencil');
+				// Switches the forms
+				$('.form').animate({
+					height: "toggle",
+					'padding-top': 'toggle',
+					'padding-bottom': 'toggle',
+					opacity: "toggle"
+				}, "slow");
+			});
+			$(document).ready(function(){
+				$(".dropdown").hover(
+						function() {
+							$('.dropdown-menu', this).stop( true, true ).slideDown("fast");
+							$(this).toggleClass('open');
+						},
+						function() {
+							$('.dropdown-menu', this).stop( true, true ).slideUp("fast");
+							$(this).toggleClass('open');
+						}
+				);
+			});
+			$(document).ready(function() {
+				/*
+                    var defaults = {
+                    containerID: 'toTop', // fading element id
+                    containerHoverID: 'toTopHover', // fading element hover id
+                    scrollSpeed: 1200,
+                    easingType: 'linear'
+                    };
+                */
+
+				$().UItoTop({ easingType: 'easeOutQuart' });
+
+			});
 		},
-		beforeDestroy:function() {//清除定时器
+		beforeDestroy: function () {//清除定时器
 			if (this.timer) {
 				clearInterval(this.timer);
 			}
 		}
+
 	})
 </script>
 </html>

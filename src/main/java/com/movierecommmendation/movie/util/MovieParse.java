@@ -12,4 +12,7 @@ public class MovieParse {
         String UserOccupation = occupation[occupationId];
         return UserOccupation;
     }
+    public Integer OccupationPrase(){
+        return 1;
+    }
 }

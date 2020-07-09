@@ -82,7 +82,7 @@ public class MovieController {
     public Map<String, Object> popularMovie(Integer curPage){
         Map<String, Object> map = new HashMap<>();
         try {
-            Page<?> page = PageHelper.startPage(curPage, 12);
+            Page<?> page = PageHelper.startPage(curPage, 6);
             List<Movie> movies = movieService.findByRatingMore(curPage);
             Long total = page.getTotal();
             map.put("state",true);
@@ -112,14 +112,45 @@ public class MovieController {
         return map;
     }
 
-    @GetMapping("/moviesUserLike")
-    public Map<String, Object> moviesUserLike(Integer UserId){
+    @GetMapping("/deleteUserLike")
+    public Map<String,Object> deleteUserLike(Integer movieId, Integer userId){
         Map<String, Object> map = new HashMap<>();
         try {
-            List<Movie> movies = movieService.findUserLikeByUser(UserId);
+            movieService.deleteUserLike(movieId, userId);
+            map.put("state",true);
+            map.put("msg","删除喜欢成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("state",false);
+            map.put("msg","提示："+e.getMessage());
+        }
+        return map;
+    }
+
+    @GetMapping("/isUserLike")
+    public Map<String,Object> isUserLike(Integer movieId, Integer userId){
+        Map<String, Object> map = new HashMap<>();
+        if(movieService.isUserLike(movieId, userId)) {
+            map.put("state",true);
+            map.put("msg","存在喜欢关系");
+        } else {
+            map.put("state",false);
+            map.put("msg","不存在喜欢关系");
+        }
+        return map;
+    }
+
+    @GetMapping("/moviesUserLike")
+    public Map<String, Object> moviesUserLike(Integer UserId, Integer curPage){
+        Map<String, Object> map = new HashMap<>();
+        try {
+            Page<?> page = PageHelper.startPage(curPage, 10);
+            List<Movie> movies = movieService.findUserLikeByUser(UserId, curPage);
+            Long total = page.getTotal();
             map.put("state",true);
             map.put("msg","查询喜欢成功");
             map.put("movies",movies);
+            map.put("total",total);
         } catch (Exception e) {
             e.printStackTrace();
             map.put("state",false);
@@ -151,7 +182,7 @@ public class MovieController {
     public Map<String, Object> MoviesByMovie(Integer movieid, Integer curPage){
         Map<String, Object> map = new HashMap<>();
         try {
-            Page<?> page = PageHelper.startPage(curPage, 5);
+            Page<?> page = PageHelper.startPage(curPage, 6);
             List<Movie> movies = movieService.findMovieByMovie(movieid,curPage);
             Long total = page.getTotal();
             map.put("state",true);
@@ -170,7 +201,7 @@ public class MovieController {
     public Map<String, Object> MoviesByOnUser(Integer userid, Integer curPage){
         Map<String, Object> map = new HashMap<>();
         try {
-            Page<?> page = PageHelper.startPage(curPage, 12);
+            Page<?> page = PageHelper.startPage(curPage, 6);
             List<Movie> movies = movieService.findMovieByOnUser(userid,curPage);
             Long total = page.getTotal();
             map.put("state",true);
@@ -189,7 +220,7 @@ public class MovieController {
     public Map<String, Object> MoviesByOffUser(Integer userid, Integer curPage){
         Map<String, Object> map = new HashMap<>();
         try {
-            Page<?> page = PageHelper.startPage(curPage, 12);
+            Page<?> page = PageHelper.startPage(curPage, 6);
             List<Movie> movies = movieService.findMovieByOffUser(userid,curPage);
             Long total = page.getTotal();
             map.put("state",true);
@@ -206,9 +237,8 @@ public class MovieController {
     @GetMapping("/genres")
     public Map<String, Object> MoviesByType(String genres, Integer curPage){
         Map<String, Object> map = new HashMap<>();
-        logger.info(genres);
         try {
-            Page<?> page = PageHelper.startPage(curPage, 24);
+            Page<?> page = PageHelper.startPage(curPage, 12);
             List<Movie> movies = movieService.findByType(genres,curPage);
             Long total = page.getTotal();
             map.put("state",true);

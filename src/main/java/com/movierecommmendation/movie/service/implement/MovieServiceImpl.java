@@ -67,7 +67,7 @@ public class MovieServiceImpl extends BaseServiceImpl<Movie> implements MovieSer
     }
 
     @Override
-    public List<Movie> findUserLikeByUser(Integer UserID){
+    public List<Movie> findUserLikeByUser(Integer UserID, Integer curPage){
         List<Movie> list = null;
         try{
             list = getMapper().findUserLikeByUser(UserID);
@@ -129,5 +129,28 @@ public class MovieServiceImpl extends BaseServiceImpl<Movie> implements MovieSer
             logger.error("根据类型查询失败!原因是:", e);
         }
         return list;
+    }
+
+    @Override
+    public boolean isUserLike(Integer MovieID, Integer UserID){
+        boolean falg=false;
+        if(getMapper().isUserLike(MovieID, UserID) != null){
+            falg=true;
+        } else {
+            falg=false;
+        }
+        return falg;
+    }
+
+    @Override
+    public boolean deleteUserLike(Integer MovieID, Integer UserID){
+        boolean falg=false;
+        try {
+            getMapper().deleteUserLike(MovieID, UserID);
+            falg=true;
+        } catch (Exception e) {
+            throw new RuntimeException("删除喜欢失败");
+        }
+        return falg;
     }
 }

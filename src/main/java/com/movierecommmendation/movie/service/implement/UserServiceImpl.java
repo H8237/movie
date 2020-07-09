@@ -45,11 +45,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         User userDB = getMapper().findByUsername(user.getUsername());
         if(userDB == null)
         {
-            if ((userDB.getAge()<150) && ( userDB.getAge()>0)) {
+            //if ((userDB.getAge()<150) && ( userDB.getAge()>0)) {
                 insert(user);
-            } else {
-                throw new RuntimeException("请填写正确的年龄");
-            }
+//            } else {
+//                throw new RuntimeException("请填写正确的年龄");
+//            }
         }else{
             throw new RuntimeException("用户名已存在");
         }

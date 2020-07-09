@@ -39,7 +39,7 @@ public class RatingServiceImpl extends BaseServiceImpl<Rating> implements Rating
     public void execPythonTest(){
         findAll();
         OffLine offLine = new OffLine();
-        offLine.DataPre("s");
+        //offLine.DataPre("s");
 
         String[] arguments = new String[] {"python","D:\\springbootproject\\test.py", "huzhiwei", "25"};
         try {

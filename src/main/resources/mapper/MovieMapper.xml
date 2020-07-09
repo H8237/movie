@@ -96,13 +96,14 @@
     *
     from movie
     where title like CONCAT('%', #{title}, '%')
+    or director like CONCAT('%', #{title}, '%')
   </select>
 
   <select id="findByAvgRating" resultMap="BaseResultMap">
     select *
     from moviebyrating
     order by avg desc
-    limit 12
+    limit 10, 6
   </select>
 
   <select id="findByRatingMore" resultMap="BaseResultMap">
@@ -110,10 +111,20 @@
     from moviebyratemore
   </select>
 
+  <select id="isUserLike" parameterType="Integer" resultType="Integer">
+    select MovieID
+    from user_like
+    where MovieID=#{MovieID} and UserID=#{UserID}
+  </select>
+
   <insert id="insertUserLike" parameterType="Integer">
 	insert into user_like (MovieID, UserID)
 	values (#{MovieID}, #{UserID})
   </insert>
+
+  <delete id="deleteUserLike" parameterType="Integer">
+		delete from  user_like where MovieID=#{MovieID} and UserID=#{UserID}
+	</delete>
 
   <select id="findUserLikeByUser" parameterType="Integer" resultMap="BaseResultMap">
     select
@@ -153,7 +164,7 @@
     select
     *
     from movie
-    where type like CONCAT('%', ${type}, '%')
+    where type like CONCAT('%', #{type}, '%')
   </select>
 
 </mapper>

@@ -18,4 +18,6 @@ public interface MovieDao extends BaseDao<Movie> {
     List<Movie> findMovieByOnUser(@Param("UserID") Integer UserID);
     List<Movie> findMovieByOffUser(@Param("UserID") Integer UserID);
     List<Movie> findByType(@Param("type") String type);
+    Integer isUserLike(@Param("MovieID") Integer MovieID, @Param("UserID") Integer UserID);
+    void deleteUserLike(@Param("MovieID") Integer MovieID, @Param("UserID") Integer UserID);
 }

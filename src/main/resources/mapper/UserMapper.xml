@@ -14,7 +14,7 @@
     <parameterMap id="User" type="com.movierecommmendation.movie.entity.User"/>
 
     <sql id="Base_Column_List">
-		userid, username, password, gender, occupation, age, zip-code
+		userid, username, password, gender, occupation, age, zipcode
 	</sql>
 
     <insert id="insert" parameterMap="User">
